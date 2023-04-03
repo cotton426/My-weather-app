@@ -1,18 +1,29 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "/src/assets/homepage.css";
 
 export function Homepage() {
   const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
   const [country, setCountry] = useState("Bangkok");
   const [dataWeather, setDataWeather] = useState({});
+  const [current, setCurrent] = useState(0);
+  const dataSlideLength = 3;
+
+  const prevSlide = () => {
+    current === 0 ? setCurrent(dataSlideLength - 1) : setCurrent(current - 1);
+  };
+
+  const nextSlide = () => {
+    current === 0 ? setCurrent(0) : setCurrent(current + 1);
+  };
 
   const handleChangeCountry = (e) => {
     setCountry(e.target.value);
   };
 
-  const tempWeather = (temp)=>{
-    return Math.round(temp)
-  }
+  const tempWeather = (temp) => {
+    return Math.round(temp);
+  };
 
   async function getWeather() {
     try {
@@ -62,13 +73,52 @@ export function Homepage() {
             {dataWeather.main && <p>{tempWeather(dataWeather.main.temp)}°C</p>}
           </h1>
           <small className="font-normal text-white">
-          {dataWeather.main &&<p>สูงสุด : {tempWeather(dataWeather.main.temp_min)}°C , ต่ำสุด : {tempWeather(dataWeather.main.temp_max)}°C</p> }
+            {dataWeather.main && (
+              <p>
+                สูงสุด : {tempWeather(dataWeather.main.temp_min)}°C , ต่ำสุด :
+                {tempWeather(dataWeather.main.temp_max)}°C
+              </p>
+            )}
           </small>
         </div>
-        <div className="info h-22 rounded-b-2xl bg-white/30 py-1">
-          <div className="status">HOT</div>
-          <div className="humidity">ความชื้น = 100</div>
-          <div className="wind">ความเร็วลม = 10</div>
+        <div
+          id="textSlide"
+          className="info h-22 rounded-b-2xl bg-white/30 py-1"
+        >
+          <div
+            id="status"
+            className={index === current ? "slide active" : "slide"}
+          >
+            {index === current && (
+              <div>
+                {dataWeather.weather && (
+                  <p>{dataWeather.weather[0].description}</p>
+                )}
+              </div>
+            )}
+          </div>
+          <div
+            id="humidity"
+            className={index === current ? "slide active" : "slide"}
+          >
+            {index === current && (
+              <div>
+                {dataWeather.main && <p>Humidity : {dataWeather.main.temp}%</p>}
+              </div>
+            )}
+          </div>
+          <div
+            id="wind"
+            className={index === current ? "slide active" : "slide"}
+          >
+            {index === current && (
+              <div>
+                {dataWeather.wind && (
+                  <p>Wind : {dataWeather.wind.speed}km/hr</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
