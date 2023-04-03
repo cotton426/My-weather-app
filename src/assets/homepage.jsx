@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "/src/assets/homepage.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { CitySearch } from "./CitySearch.jsx";
 
 export function Homepage() {
   const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
@@ -51,19 +51,23 @@ export function Homepage() {
 
   useEffect(() => {
     getWeather();
-  }, []);
+  }, [country]);
+
+  useEffect(() => {
+    setCurrent(0);
+  }, [status]);
 
   return (
     <div className="flex justify-start items-center flex-col  box-border m-0 w-screen h-screen bg-gradient-to-bl from-orange-300 to-rose-300">
-      <div className="input flex justify-center pt-10 mb-1">
-        <input
-          type="text"
-          placeholder="searching.."
-          className="my-10 block w-[300px] sm:w-[500px] p-4  rounded-lg bg-gray-50 sm:text-md focus:ring-black  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          onChange={handleChangeCountry}
-          value={country}
-        />
-      </div>
+      <CitySearch
+        onSelectCity={(cityData) => {
+          setCountry(cityData.name);
+          setShortName(cityData.sys.country);
+          setTemp(cityData.main);
+          setStatus(cityData.weather[0].description);
+          setWind(cityData.wind.speed);
+        }}
+      />
       <div className=" flex flex-col w-auto text-center ">
         <div
           id="location"
