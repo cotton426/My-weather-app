@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { TbToggleLeft, TbToggleRight } from "react-icons/tb";
+import { CiLight } from "react-icons/ci";
+import {MdOutlineLightMode,MdOutlineDarkMode} from "react-icons/md";
 import { CitySearch } from "./CitySearch.jsx";
 import WeatherContext from "./WeatherContext.js";
 
@@ -92,7 +93,7 @@ export function Homepage() {
           className="relative flex justify-center flex-col sm:w-[500px] w-[300px] pb-6 pt-2 "
         >
           <button className="absolute top-[-90px] right-[-50px] z-10" onClick={toggleDarkMode}>
-            {darkMode ? <TbToggleLeft size={35} color="white"/> : <TbToggleRight size={35} />}
+            {darkMode ? <CiLight size={30} color="white"/> : <MdOutlineDarkMode size={30} />}
           </button>
 
           <h1 className="city text-5xl pb-3 font-semibold text-gray-900 text-center  dark:text-white ">
