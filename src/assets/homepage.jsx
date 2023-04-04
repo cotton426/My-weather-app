@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { CitySearch } from "./CitySearch.jsx";
+import WeatherContext from "./WeatherContext.js";
+
+const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
+export { apiKey };
 
 export function Homepage() {
-  const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
   const [country, setCountry] = useState("bangkok");
   const [shortName, setShortName] = useState("");
   const [temp, setTemp] = useState({
@@ -59,15 +62,17 @@ export function Homepage() {
 
   return (
     <div className="flex justify-start items-center flex-col  box-border m-0 w-screen h-screen bg-gradient-to-bl from-orange-300 to-rose-300">
-      <CitySearch
-        onSelectCity={(cityData) => {
-          setCountry(cityData.name);
-          setShortName(cityData.sys.country);
-          setTemp(cityData.main);
-          setStatus(cityData.weather[0].description);
-          setWind(cityData.wind.speed);
+      <WeatherContext.Provider
+        value={{
+          setCountry,
+          setShortName,
+          setTemp,
+          setStatus,
+          setWind,
         }}
-      />
+      >
+        <CitySearch />
+      </WeatherContext.Provider>
       <div className=" flex flex-col w-auto text-center ">
         <div
           id="location"

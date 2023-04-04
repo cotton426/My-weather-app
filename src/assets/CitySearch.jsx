@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import WeatherContext from "./WeatherContext";
+import { apiKey } from "./Homepage";
 
-export const CitySearch = ({ onSelectCity }) => {
-  const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
+
+export const CitySearch = () => {
+  const { setCountry, setShortName, setTemp, setStatus, setWind } = useContext(
+    WeatherContext
+  );
+
+  // Add the missing state variables here
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -27,8 +35,13 @@ export const CitySearch = ({ onSelectCity }) => {
   const handleSelectCity = (cityData) => {
     setSearchTerm("");
     setSearchResults([]);
-    onSelectCity(cityData);
+    setCountry(cityData.name);
+    setShortName(cityData.sys.country);
+    setTemp(cityData.main);
+    setStatus(cityData.weather[0].description);
+    setWind(cityData.wind.speed);
   };
+  
 
   return (
     <div className="input flex justify-center pt-10 mb-1">
