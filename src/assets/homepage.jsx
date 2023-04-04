@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { CiLight } from "react-icons/ci";
+import {MdOutlineLightMode,MdOutlineDarkMode} from "react-icons/md";
 import { CitySearch } from "./CitySearch.jsx";
+import WeatherContext from "./WeatherContext.js";
+
+const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
+export { apiKey };
 
 export function Homepage() {
-  const apiKey = "0598ea6e3fd2652ff1997748cd1b1f33";
   const [country, setCountry] = useState("bangkok");
   const [shortName, setShortName] = useState("");
   const [temp, setTemp] = useState({
@@ -16,6 +21,8 @@ export function Homepage() {
   const [wind, setWind] = useState(0);
   const [status, setStatus] = useState("");
   const [current, setCurrent] = useState(0);
+  const [darkMode, setDarkMode] = useState(false);
+
   const dataSlideLength = 3;
 
   const prevSlide = () => {
@@ -28,6 +35,10 @@ export function Homepage() {
   console.log(current);
   const handleChangeCountry = (e) => {
     setCountry(e.target.value);
+  };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
   };
 
   const getInteger = (temp) => {
@@ -58,30 +69,42 @@ export function Homepage() {
   }, [status]);
 
   return (
-    <div className="flex justify-start items-center flex-col  box-border m-0 w-screen h-screen bg-gradient-to-bl from-orange-300 to-rose-300">
-      <CitySearch
-        onSelectCity={(cityData) => {
-          setCountry(cityData.name);
-          setShortName(cityData.sys.country);
-          setTemp(cityData.main);
-          setStatus(cityData.weather[0].description);
-          setWind(cityData.wind.speed);
+    <div
+      className={`flex justify-start items-center flex-col box-border m-0 w-screen h-screen ${
+        darkMode
+          ? "dark:bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-900 to-gray-700 bg-gradient-to-b dark"
+          : "bg-gradient-to-bl from-orange-300 to-rose-300"
+      }`}
+    >
+      <WeatherContext.Provider
+        value={{
+          setCountry,
+          setShortName,
+          setTemp,
+          setStatus,
+          setWind,
         }}
-      />
+      >
+        <CitySearch />
+      </WeatherContext.Provider>
       <div className=" flex flex-col w-auto text-center ">
         <div
           id="location"
-          className=" flex justify-center flex-col sm:w-[500px] w-[300px] pb-6 pt-2 "
+          className="relative flex justify-center flex-col sm:w-[500px] w-[300px] pb-6 pt-2 "
         >
+          <button className="absolute top-[-90px] right-[-50px] z-10" onClick={toggleDarkMode}>
+            {darkMode ? <CiLight size={30} color="white"/> : <MdOutlineDarkMode size={30} />}
+          </button>
+
           <h1 className="city text-5xl pb-3 font-semibold text-gray-900 text-center  dark:text-white ">
             {country}
           </h1>
-          <p className="state text-center">{shortName}</p>
+          <p className="state text-center dark:text-gray-300">{shortName}</p>
         </div>
 
         <div
           id="temperature"
-          className="weather rounded-t-2xl bg-orange-500 py-5"
+          className="weather rounded-t-2xl bg-orange-500 dark:bg-slate-900 py-5"
         >
           <h1 className="average-temp text-4xl  text-white ">
             {getInteger(temp.temp)}°C
@@ -94,7 +117,7 @@ export function Homepage() {
 
         <div
           id="slider"
-          className="relative flex justify-center items-center h-22 rounded-b-2xl bg-white/30 py-1"
+          className="relative flex justify-center items-center h-22 rounded-b-2xl bg-white/30 dark:bg-white/10 py-1"
         >
           <div className="leftArrowContainer cursor-pointer transform transition-all duration-100 hover:scale-8 absolute left-[10%] z-10">
             <SlArrowLeft
@@ -114,7 +137,7 @@ export function Homepage() {
               return (
                 <div
                   key={index}
-                  className={index === current ? "slide active" : "slide"}
+                  className={index === current ? "slide active dark:text-white" : "slide"}
                 >
                   {index === current && <div>{data}</div>}
                 </div>
