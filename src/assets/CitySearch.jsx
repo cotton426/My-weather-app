@@ -15,6 +15,7 @@ export const CitySearch = ({ onSelectCity }) => {
           `https://api.openweathermap.org/data/2.5/weather?q=${e.target.value}&units=metric&appid=${apiKey}`
         );
         setSearchResults([response.data]);
+        
       } catch (error) {
         console.error(error);
       }
