@@ -49,7 +49,7 @@ export const CitySearch = () => {
         <input
           type="text"
           placeholder="searching.."
-          className="my-10 block w-full p-4 rounded-lg bg-gray-50 sm:text-md focus:ring-black dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="my-10 block w-full p-4 rounded-lg bg-gray-50 sm:text-md focus:ring-black dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
           onChange={handleChangeCountry}
           value={searchTerm}
         />
@@ -57,7 +57,7 @@ export const CitySearch = () => {
           {searchResults.map((result, index) => (
             <div
               key={index}
-              className="search-result-item p-2 hover:bg-gray-200 cursor-pointer"
+              className="search-result-item p-2 hover:bg-gray-50 dark:hover:text-black dark:text-slate-200 cursor-pointer"
               onClick={() => handleSelectCity(result)}
             >
               {result.name}, {result.sys.country}
